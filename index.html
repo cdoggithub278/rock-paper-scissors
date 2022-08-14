@@ -5,6 +5,10 @@
         <meta charset="utf-8">
     </head>
     <body>
+        <button value="rock">Rock</button>
+        <button value="paper">Paper</button>
+        <button value="scissors">Scissors</button>
+        <div></div>
         <script>
             let compScore = 0, userScore = 0;
 
@@ -17,66 +21,32 @@
             }
 
             function playRound(playerChoice, compChoice) {
-                if (playerChoice === compChoice) console.log(`-Computer chose ${compChoice}, tie!-`);
-                else if (playerChoice === 'rock' && compChoice === 'paper') {
-                    console.log(`-Computer chose ${compChoice}, lose!-`);
+                if (playerChoice === compChoice) {
+                    resultsDiv.textContent = ''
+                    resultsDiv.textContent += `-Computer chose ${compChoice}, tie!-`;
+                    resultsDiv.textContent += `User Score: ${userScore}, Computer Score: ${compScore}`;
+                }
+                else if (playerChoice === 'scissors' && compChoice === 'rock' || playerChoice === 'paper' && compChoice === 'scissors' || playerChoice === 'rock' && compChoice === 'paper') {
                     compScore++;
+                    resultsDiv.textContent = ''
+                    resultsDiv.textContent += (`-Computer chose ${compChoice}, lose!-`);
+                    resultsDiv.textContent += `User Score: ${userScore}, Computer Score: ${compScore}`;
                 }
-                else if (playerChoice === 'rock' && compChoice === 'scissors') {
-                    console.log(`-Computer chose ${compChoice}, win!-`);
+                else if (playerChoice === 'scissors' && compChoice === 'paper' || playerChoice === 'rock' && compChoice === 'scissors' || playerChoice === 'paper' && compChoice === 'rock') {
                     userScore++;
-                }
-                else if (playerChoice === 'paper' && compChoice === 'scissors') {
-                    console.log(`-Computer chose ${compChoice}, lose!-`);
-                    compScore++;
-                }
-                else if (playerChoice === 'paper' && compChoice === 'rock') {
-                    console.log(`-Computer chose ${compChoice}, win!-`);
-                    userScore++;
-                }
-                else if (playerChoice === 'scissors' && compChoice === 'rock') {
-                    console.log(`-Computer chose ${compChoice}, lose!-`);
-                    compScore++;
-                }
-                else if (playerChoice === 'scissors' && compChoice === 'paper') {
-                    console.log(`-Computer chose ${compChoice}, win!-`);
-                    userScore++;
-                }
+                    resultsDiv.textContent = ''
+                    resultsDiv.textContent += `-Computer chose ${compChoice}, win!`;
+                    resultsDiv.textContent += `User Score: ${userScore}, Computer Score: ${compScore}`;
+                }   
             }
 
-            let rounds = 0
-            let intro = confirm("Welcome to Rock Paper Scissors! Person with the most points after 3 rounds wins. Would you like to proceed? (Open the browser console to see results of each round!)");
-            if (intro === true) {
-                while (rounds<=2) {
-                    let playerChoice = prompt('Which would you like? Rock, Paper, or Scissors?')
-                        if (playerChoice === null) {
-                            playerScore = NaN
-                            compScore = undefined
-                            break;
-                        }
-                        else if (playerChoice === '') {
-                            alert('You need to pick one of the options listed!');
-                        }
-                        else if (playerChoice.toLowerCase() === 'rock' || playerChoice.toLowerCase() === 'paper' || playerChoice.toLowerCase() === 'scissors') {
-                            compChoice = getComputerChoice();
-                            playRound(playerChoice.toLowerCase(), compChoice);
-                            console.log(`Computer Score: ${compScore}`);
-                            console.log(`User Score: ${userScore}`);
-                            rounds++
-                        }
-                        else {
-                            alert('Unrecognized value')
-                        }
-                }
-                
-                if (userScore > compScore) console.log('Congratulations! You win!');
-                else if (compScore > userScore) console.log('You lost! Better luck next time!');
-                else if (userScore === compScore) console.log('It was a tie! You both win!')
-                else alert('Canceled.')
-            }
-            else {
-                alert("Thank you for your time!")
-            }
+            let choiceButtons = document.querySelectorAll('button');
+            let resultsDiv = document.querySelector('div');
+                choiceButtons.forEach(button => button.addEventListener('click', function(e) {
+                let playerChoice = this.value;
+                let compChoice = getComputerChoice()
+                playRound(playerChoice, compChoice)
+            }));
         </script>
     </body>
 </html>
