@@ -10,7 +10,7 @@
         <button value="scissors">Scissors</button>
         <div class="results"></div>
         <div class="score"></div>
-        <div class="end"></div>
+        <div class="end" style="color: black;"></div>
         <script>
             let compScore = 0, userScore = 0;
 
@@ -23,41 +23,41 @@
             }
 
             function playRound(playerChoice, compChoice) {
+                resultsDiv.textContent = ''
+                scoresDiv.textContent = ''
                 if (playerChoice === compChoice) {
-                    resultsDiv.textContent = ''
-                    scoresDiv.textContent = ''
                     resultsDiv.textContent += `-Computer chose ${compChoice}, tie!-`;
                     scoresDiv.textContent += `User Score: ${userScore}, Computer Score: ${compScore}`;
                 }
                 else if ((playerChoice === 'scissors' && compChoice === 'rock') || (playerChoice === 'paper' && compChoice === 'scissors') || (playerChoice === 'rock' && compChoice === 'paper')) {
                     compScore++;
-                    resultsDiv.textContent = ''
-                    scoresDiv.textContent = ''
                     resultsDiv.textContent += (`-Computer chose ${compChoice}, lose!-`);
                     scoresDiv.textContent += `User Score: ${userScore}, Computer Score: ${compScore}`;
                 }
                 else if ((playerChoice === 'scissors' && compChoice === 'paper') || (playerChoice === 'rock' && compChoice === 'scissors') || (playerChoice === 'paper' && compChoice === 'rock')) {
                     userScore++;
-                    resultsDiv.textContent = ''
-                    scoresDiv.textContent = ''
-                    resultsDiv.textContent += `-Computer chose ${compChoice}, win!`;
+                    resultsDiv.textContent += `-Computer chose ${compChoice}, win!-`;
                     scoresDiv.textContent += `User Score: ${userScore}, Computer Score: ${compScore}`;
-                }  
-            }
-        
-            let choiceButtons = document.querySelectorAll('button');
-            let resultsDiv = document.querySelector('div'), scoresDiv = document.querySelector('.score'), endScreen = document.querySelector('end');
-                choiceButtons.forEach(button => button.addEventListener('click', function(e) {
+                }
+                if (userScore === 5 || compScore === 5) {
+                    if (userScore > compScore) endScreen.textContent += 'User Won!';
+                    else endScreen.textContent += 'Computer Won!'  
+                }
+                }
+                
+            function buttonPress(e) {
                 let playerChoice = this.value;
                 let compChoice = getComputerChoice();
                 if (userScore === 5 || compScore === 5) {
-                    if (userScore > compScore) {
-                        endScreen.textContent += 'User Won!'
-                    }
-                    else endScreen.textContent += 'Computer Won!'
+                    return;
                 }
                 else playRound(playerChoice, compChoice); 
-            }));
+            }
+           
+            let choiceButtons = document.querySelectorAll('button');
+            let resultsDiv = document.querySelector('div'), scoresDiv = document.querySelector('.score'), endScreen = document.querySelector('.end');
+            choiceButtons.forEach(button => button.addEventListener('click', buttonPress));
+            
         </script>
     </body>
 </html>
